@@ -1,4 +1,44 @@
+import { useState } from "react";
+import axios from 'axios';
+;
+
 function CreateUser() {
+
+
+  const initialValue = {
+    name: '',
+    lastname: '',
+    mail: '',
+    user: '',
+    birthday: '0'
+  }
+
+  const [user, setUsuario] = useState(initialValue)
+
+  const dataCapture = (e) => {
+    const { name, value } = e.target
+    setUsuario({ ...user, [name]: value })
+  }
+
+  const dataSave = async (e) => {
+    e.preventDefault();
+
+    //PETICION POST
+    const newUser = {
+      name: user.name,
+      lastname: user.lastname,
+      mail: user.mail,
+      user: user.user,
+      birthday: user.birthday
+    }
+
+    await axios.post('http://localhost:3007/api/user', newUser)
+
+
+    setUsuario ({...initialValue})
+
+  }
+
   return (
     <div>
       <div className="hidden sm:block" aria-hidden="true">
@@ -16,28 +56,72 @@ function CreateUser() {
             </div>
           </div>
           <div className="mt-5 md:mt-0 md:col-span-2">
-            <form className="#" method="POST">
+            <form onSubmit={dataSave}>
               <div className="shadow overflow-hidden sm:rounded-md">
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-100 sm:col-span-3">
-                      <label for="first-name" className="block text-sm font-medium text-gray-700">First name</label>
-                      <input type="text" name="first-name" id="first-name" autocomplete="given-name" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                      <label className="block text-sm font-medium text-gray-700">First name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Your first name here"
+                        required
+                        value={user.name}
+                        onChange={dataCapture}
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-1000 rounded-md"
+                      />
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
-                      <label for="last-name" className="block text-sm font-medium text-gray-700">Last name</label>
-                      <input type="text" name="last-name" id="last-name" autocomplete="family-name" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                      <label className="block text-sm font-medium text-gray-700">Last name</label>
+                      <input
+                        type="text"
+                        name="lastname"
+                        placeholder="Your last name here"
+                        required
+                        value={user.lastname}
+                        onChange={dataCapture}
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
                     </div>
 
                     <div className="col-span-15 sm:col-span-4">
-                      <label for="email-address" className="block text-sm font-medium text-gray-700">Email address</label>
-                      <input type="text" name="email-address" id="email-address" autocomplete="email" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                      <label className="block text-sm font-medium text-gray-700">Email address</label>
+                      <input
+                        type="text"
+                        name="mail"
+                        placeholder="please insert your email"
+                        required
+                        value={user.mail}
+                        onChange={dataCapture}
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
                     </div>
 
                     <div className="col-span-15 sm:col-span-3">
-                      <label for="user" className="block text-sm font-medium text-gray-700">User</label>
-                      <input type="text" name="usernme" id="user" autocomplete="User" className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                      <label className="block text-sm font-medium text-gray-700">User</label>
+                      <input
+                        type="text"
+                        name="user"
+                        placeholder="insert your username"
+                        required
+                        value={user.user}
+                        onChange={dataCapture}
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div className="col-span-15 sm:col-span-3">
+                      <label className="block text-sm font-medium text-gray-700">Birthday</label>
+                      <input
+                        type="number"
+                        name="birthday"
+                        required
+                        value={user.birthday}
+                        onChange={dataCapture}
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
                     </div>
                   </div>
                 </div>
